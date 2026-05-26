@@ -10,65 +10,42 @@ import javax.validation.constraints.NotNull;
 @Data
 public class OrderInfoPageDTO {
 
-    /**
-     * 起始页数
-     */
     @NotNull(message = "起始页数不能为空")
     private Integer pageNum;
 
-    /**
-     * 每页大小
-     */
     @NotNull(message = "每页大小不能为空")
     private Integer pageSize;
 
-    /**
-     * 生产单批次订单ID（模糊）
-     */
-    private String batchId;
+    /** 大包号（模糊） */
+    private String packageNo;
 
-    /**
-     * 产品名称（模糊）
-     */
-    private String productName;
+    /** 客户来源（模糊） */
+    private String customerSource;
 
-    /**
-     * 托盘号（模糊）
-     */
-    private String trayCode;
+    /** 批次号（模糊） */
+    private String batchNo;
 
-    /**
-     * 托盘状态：1执行中 2已组批 3已称重 4已下货
-     */
+    /** 业务编号（模糊） */
+    private String businessNo;
+
+    /** WCS流转状态：1已上货 2分拣 3AGV运输中 4已送达WMS */
     private String trayStatus;
 
-    /**
-     * 作废标识：0未作废 1作废
-     */
+    /** 作废标识：0未作废 1作废 */
     private String invalidFlag;
 
-    /**
-     * 规格（模糊）
-     */
-    private String spec;
+    /** 目的国（模糊） */
+    private String destinationCountry;
 
-    /**
-     * 来源
-     */
-    private String source;
+    /** 来源仓 */
+    private String sourceWarehouse;
 
-    /**
-     * 生产日期（对应 insert_time 的日期，格式 yyyy-MM-dd，按自然日筛选）
-     */
+    /** 上货日期（对应 insert_time，格式 yyyy-MM-dd） */
     private String productionDate;
 
-    /**
-     * 物料编码（模糊）
-     */
-    private String productCode;
+    /** 渠道（模糊） */
+    private String channel;
 
-    /**
-     * 生产订单号（模糊）
-     */
-    private String orderId;
+    /** 状态（如已装箱） */
+    private String packageStatus;
 }

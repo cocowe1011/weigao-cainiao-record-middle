@@ -4,45 +4,73 @@
 
     <resultMap type="com.middle.wcs.order.entity.po.OrderInfo" id="OrderInfoMap">
         <id property="id" column="id" jdbcType="BIGINT"/>
-        <result property="insertTime" column="insert_time" jdbcType="TIMESTAMP"/>
-        <result property="batchId" column="batch_id" jdbcType="VARCHAR"/>
-        <result property="productName" column="product_name" jdbcType="VARCHAR"/>
-        <result property="trayCode" column="tray_code" jdbcType="VARCHAR"/>
-        <result property="trayStatus" column="tray_status" jdbcType="VARCHAR"/>
         <result property="invalidFlag" column="invalid_flag" jdbcType="VARCHAR"/>
-        <result property="spec" column="spec" jdbcType="VARCHAR"/>
+        <result property="trayStatus" column="tray_status" jdbcType="VARCHAR"/>
+        <result property="insertTime" column="insert_time" jdbcType="TIMESTAMP"/>
         <result property="finishTime" column="finish_time" jdbcType="TIMESTAMP"/>
-        <result property="weight" column="weight" jdbcType="VARCHAR"/>
-        <result property="batchNum" column="batch_num" jdbcType="VARCHAR"/>
-        <result property="source" column="source" jdbcType="VARCHAR"/>
-        <result property="productCode" column="product_code" jdbcType="VARCHAR"/>
-        <result property="orderId" column="order_id" jdbcType="VARCHAR"/>
-        <result property="fseqId" column="fseq_id" jdbcType="VARCHAR"/>
-        <result property="fentryId" column="fentry_id" jdbcType="VARCHAR"/>
-        <result property="unloadPort" column="unload_port" jdbcType="VARCHAR"/>
-        <result property="udiCode" column="udi_code" jdbcType="VARCHAR"/>
+        <result property="packageNo" column="package_no" jdbcType="VARCHAR"/>
+        <result property="customerSource" column="customer_source" jdbcType="VARCHAR"/>
+        <result property="packageCreateTime" column="package_create_time" jdbcType="VARCHAR"/>
+        <result property="sourceWarehouse" column="source_warehouse" jdbcType="VARCHAR"/>
+        <result property="chargeWeight" column="charge_weight" jdbcType="VARCHAR"/>
+        <result property="expectedQty" column="expected_qty" jdbcType="VARCHAR"/>
+        <result property="actualQty" column="actual_qty" jdbcType="VARCHAR"/>
+        <result property="channel" column="channel" jdbcType="VARCHAR"/>
+        <result property="packageStatus" column="package_status" jdbcType="VARCHAR"/>
+        <result property="destinationCountry" column="destination_country" jdbcType="VARCHAR"/>
+        <result property="departurePort" column="departure_port" jdbcType="VARCHAR"/>
+        <result property="destinationPort" column="destination_port" jdbcType="VARCHAR"/>
+        <result property="mblNo" column="mbl_no" jdbcType="VARCHAR"/>
+        <result property="subBillNo" column="sub_bill_no" jdbcType="VARCHAR"/>
+        <result property="businessNo" column="business_no" jdbcType="VARCHAR"/>
+        <result property="containerNo" column="container_no" jdbcType="VARCHAR"/>
+        <result property="sealNo" column="seal_no" jdbcType="VARCHAR"/>
+        <result property="packingTime" column="packing_time" jdbcType="VARCHAR"/>
+        <result property="packer" column="packer" jdbcType="VARCHAR"/>
+        <result property="handoverTime" column="handover_time" jdbcType="VARCHAR"/>
+        <result property="handoverPerson" column="handover_person" jdbcType="VARCHAR"/>
+        <result property="customsPort" column="customs_port" jdbcType="VARCHAR"/>
+        <result property="billReceiver" column="bill_receiver" jdbcType="VARCHAR"/>
+        <result property="batchNo" column="batch_no" jdbcType="VARCHAR"/>
+        <result property="plateNo" column="plate_no" jdbcType="VARCHAR"/>
     </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+        invalid_flag,
+        tray_status,
+        insert_time,
+        finish_time,
+        package_no,
+        customer_source,
+        package_create_time,
+        source_warehouse,
+        charge_weight,
+        expected_qty,
+        actual_qty,
+        channel,
+        package_status,
+        destination_country,
+        departure_port,
+        destination_port,
+        mbl_no,
+        sub_bill_no,
+        business_no,
+        container_no,
+        seal_no,
+        packing_time,
+        packer,
+        handover_time,
+        handover_person,
+        customs_port,
+        bill_receiver,
+        batch_no,
+        plate_no
+    </sql>
 
     <select id="queryHistoryOrderList" resultMap="OrderInfoMap">
         SELECT
-            id,
-            insert_time,
-            batch_id,
-            product_name,
-            tray_code,
-            tray_status,
-            invalid_flag,
-            spec,
-            finish_time,
-            weight,
-            batch_num,
-            source,
-            product_code,
-            order_id,
-            fseq_id,
-            fentry_id,
-            unload_port,
-            udi_code
+            <include refid="Base_Column_List"/>
         FROM
             dbo.order_info
         WHERE
@@ -50,33 +78,36 @@
         <if test="invalidFlag != null and invalidFlag != ''">
             AND invalid_flag = #{invalidFlag}
         </if>
-        <if test="batchId != null and batchId != ''">
-            AND batch_id LIKE CONCAT('%', #{batchId}, '%')
+        <if test="packageNo != null and packageNo != ''">
+            AND package_no LIKE CONCAT('%', #{packageNo}, '%')
         </if>
-        <if test="productName != null and productName != ''">
-            AND product_name LIKE CONCAT('%', #{productName}, '%')
+        <if test="customerSource != null and customerSource != ''">
+            AND customer_source LIKE CONCAT('%', #{customerSource}, '%')
         </if>
-        <if test="trayCode != null and trayCode != ''">
-            AND tray_code LIKE CONCAT('%', #{trayCode}, '%')
+        <if test="batchNo != null and batchNo != ''">
+            AND batch_no LIKE CONCAT('%', #{batchNo}, '%')
+        </if>
+        <if test="businessNo != null and businessNo != ''">
+            AND business_no LIKE CONCAT('%', #{businessNo}, '%')
         </if>
         <if test="trayStatus != null and trayStatus != ''">
             AND tray_status = #{trayStatus}
         </if>
-        <if test="spec != null and spec != ''">
-            AND spec LIKE CONCAT('%', #{spec}, '%')
+        <if test="destinationCountry != null and destinationCountry != ''">
+            AND destination_country LIKE CONCAT('%', #{destinationCountry}, '%')
         </if>
-        <if test="source != null and source != ''">
-            AND source = #{source}
+        <if test="sourceWarehouse != null and sourceWarehouse != ''">
+            AND source_warehouse = #{sourceWarehouse}
+        </if>
+        <if test="channel != null and channel != ''">
+            AND channel LIKE CONCAT('%', #{channel}, '%')
+        </if>
+        <if test="packageStatus != null and packageStatus != ''">
+            AND package_status = #{packageStatus}
         </if>
         <if test="productionDate != null and productionDate != ''">
             AND insert_time &gt;= CAST(#{productionDate} AS DATETIME)
             AND insert_time &lt; DATEADD(DAY, 1, CAST(#{productionDate} AS DATETIME))
-        </if>
-        <if test="productCode != null and productCode != ''">
-            AND product_code LIKE CONCAT('%', #{productCode}, '%')
-        </if>
-        <if test="orderId != null and orderId != ''">
-            AND order_id LIKE CONCAT('%', #{orderId}, '%')
         </if>
         ORDER BY
             insert_time DESC
@@ -84,32 +115,12 @@
 
     <select id="getLastUnloadGoods" resultMap="OrderInfoMap">
         SELECT TOP 1
-            id,
-            insert_time,
-            batch_id,
-            product_name,
-            tray_code,
-            tray_status,
-            invalid_flag,
-            spec,
-            finish_time,
-            weight,
-            batch_num,
-            source,
-            product_code,
-            order_id,
-            fseq_id,
-            fentry_id,
-            unload_port,
-            udi_code
+            <include refid="Base_Column_List"/>
         FROM
             dbo.order_info
         WHERE
             tray_status = '4'
             AND finish_time &gt;= CAST(GETDATE() AS DATE)
-        <if test="unloadPort != null and unloadPort != ''">
-            AND unload_port = #{unloadPort}
-        </if>
         ORDER BY
             finish_time DESC
     </select>

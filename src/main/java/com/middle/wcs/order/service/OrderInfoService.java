@@ -40,8 +40,8 @@ public interface OrderInfoService {
     List<OrderInfo> selectByList(OrderInfo dto);
 
     /**
-     * 查询今日最新已下货数据
-     * @param unloadPort 下货口编号（1或2），可为空
+     * 查询今日最新已送达WMS数据
+     * @param unloadPort 保留参数，兼容旧调用
      * @return 订单信息
      */
     OrderInfo getLastUnloadGoods(String unloadPort);

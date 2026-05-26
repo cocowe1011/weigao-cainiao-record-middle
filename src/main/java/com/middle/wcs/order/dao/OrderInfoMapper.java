@@ -19,9 +19,9 @@ public interface OrderInfoMapper extends BaseMapper<OrderInfo> {
     List<OrderInfo> queryHistoryOrderList(OrderInfoPageDTO dto);
 
     /**
-     * 查询今日最新已下货数据
-     * @param unloadPort 下货口编号，可为空
+     * 查询今日最新已送达WMS数据
+     * @param unused 保留参数，兼容旧调用
      * @return 订单信息
      */
-    OrderInfo getLastUnloadGoods(@Param("unloadPort") String unloadPort);
+    OrderInfo getLastUnloadGoods(@Param("unloadPort") String unused);
 }
