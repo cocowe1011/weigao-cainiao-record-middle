@@ -7,6 +7,9 @@
         <result property="queueName" column="queue_name" jdbcType="VARCHAR"/>
         <result property="trayInfo" column="tray_info" jdbcType="VARCHAR"/>
         <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="trayStatus" column="tray_status" jdbcType="VARCHAR"/>
+        <result property="robotTaskCode" column="robot_task_code" jdbcType="VARCHAR"/>
+        <result property="isLock" column="is_lock" jdbcType="VARCHAR"/>
     </resultMap>
 
     

@@ -1,0 +1,103 @@
+package com.middle.wcs.order.controller;
+
+import com.middle.wcs.hander.ResponseResult;
+import com.middle.wcs.order.entity.dto.McsTaskCallbackRequest;
+import com.middle.wcs.order.entity.po.QueueInfo;
+import com.middle.wcs.order.service.QueueInfoService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
+
+/**
+ * 对外开放接口 - MCS任务回调
+ * MCS在任务执行过程中调用此接口通知WCS
+ * 通过 method + endMachineCode（分拣口编号1~13）定位队列
+ */
+@Api(tags = "MCS对外开放接口")
+@RestController
+@RequestMapping("/api")
+@Slf4j
+public class ExternalInterfaceController {
+
+    @Resource
+    private QueueInfoService queueInfoService;
+
+    @ApiOperation("MCS任务执行过程回馈接口")
+    @PostMapping("/robot/reporter/task")
+    @Transactional(rollbackFor = Exception.class)
+    public ResponseResult<Boolean> task(@ApiParam(value = "入参", required = true)
+                                        @RequestBody McsTaskCallbackRequest dto) {
+        log.info("MCS任务回调接口入参：{}", dto);
+
+        String method = dto.getMethod();
+        String endMachineCodeStr = dto.getEndMachineCode();
+
+        if (method == null || endMachineCodeStr == null || endMachineCodeStr.isEmpty()) {
+            log.warn("MCS任务回调：method或endMachineCode为空，method={}, endMachineCode={}", method, endMachineCodeStr);
+            return ResponseResult.success(true);
+        }
+
+        int endMachineCode;
+        try {
+            endMachineCode = Integer.parseInt(endMachineCodeStr);
+        } catch (NumberFormatException e) {
+            log.warn("MCS任务回调：endMachineCode格式错误，endMachineCode={}", endMachineCodeStr);
+            return ResponseResult.success(true);
+        }
+
+        // endMachineCode = 分拣口编号(1~13)，queue_id = 分拣口编号 + 1
+        long queueId = endMachineCode + 1L;
+        QueueInfo queueInfo = this.queueInfoService.getQueueInfoById(queueId);
+
+        if (queueInfo == null) {
+            log.warn("MCS任务回调：未找到队列，endMachineCode={}, queueId={}", endMachineCode, queueId);
+            return ResponseResult.success(true);
+        }
+
+        log.info("MCS任务回调：method={}, endMachineCode={}, queueId={}, queueName={}, 当前trayStatus={}",
+                method, endMachineCode, queueId, queueInfo.getQueueName(), queueInfo.getTrayStatus());
+
+        QueueInfo queueInfoForUpdate = new QueueInfo();
+        queueInfoForUpdate.setId(queueInfo.getId());
+
+        switch (method) {
+            case "outbin":
+                // 满垛离开：AGV已取货离开分拣口，trayStatus 从 "0" 更新为 "1"
+                if ("0".equals(queueInfo.getTrayStatus())) {
+                    log.info("MCS任务回调-outbin：满垛离开，分拣口{}，trayStatus 0->1", endMachineCode);
+                    queueInfoForUpdate.setTrayStatus("1");
+                    this.queueInfoService.update(queueInfoForUpdate);
+                } else {
+                    log.warn("MCS任务回调-outbin：分拣口{}，当前trayStatus={}，非'0'状态，跳过",
+                            endMachineCode, queueInfo.getTrayStatus());
+                }
+                break;
+
+            case "arrive":
+                // 空箱返回：AGV已送空托盘回来，trayStatus 从 "1" 更新为 "2"
+                if ("1".equals(queueInfo.getTrayStatus())) {
+                    log.info("MCS任务回调-arrive：空箱返回，分拣口{}，trayStatus 1->2", endMachineCode);
+                    queueInfoForUpdate.setTrayStatus("2");
+                    this.queueInfoService.update(queueInfoForUpdate);
+                } else {
+                    log.warn("MCS任务回调-arrive：分拣口{}，当前trayStatus={}，非'1'状态，跳过",
+                            endMachineCode, queueInfo.getTrayStatus());
+                }
+                break;
+
+            default:
+                log.warn("MCS任务回调：未知method={}，分拣口{}", method, endMachineCode);
+                break;
+        }
+
+        return ResponseResult.success(true);
+    }
+}

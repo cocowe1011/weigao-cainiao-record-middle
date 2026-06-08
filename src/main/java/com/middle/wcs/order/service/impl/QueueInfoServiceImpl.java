@@ -10,8 +10,6 @@ import javax.annotation.Resource;
 
 import java.util.List;
 
-import static com.github.pagehelper.page.PageMethod.startPage;
-
 /**
  * (QueueInfo)表服务实现类
  *
