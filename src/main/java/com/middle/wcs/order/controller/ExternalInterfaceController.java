@@ -63,13 +63,13 @@ public class ExternalInterfaceController {
     @ApiOperation("AGV任务执行过程回馈接口")
     @PostMapping("/robot/reporter/task")
     @Transactional(rollbackFor = Exception.class)
-    public ResponseResult<Boolean> task(@ApiParam(value = "入参", required = true)
+    public ResponseResult task(@ApiParam(value = "入参", required = true)
                                         @RequestBody RobotTaskRequest dto) {
         log.info("AGV任务回调接口入参：{}", dto);
 
         if (dto.getExtra() == null || dto.getExtra().getValues() == null) {
             log.warn("AGV任务回调：extra或values为空，robotTaskCode={}", dto.getRobotTaskCode());
-            return ResponseResult.success(true);
+            return ResponseResult.successWithCode0();
         }
 
         Values values = dto.getExtra().getValues();
@@ -79,7 +79,7 @@ public class ExternalInterfaceController {
         if (method == null || slotName == null || slotName.isEmpty()) {
             log.warn("AGV任务回调：method或slotName为空，method={}, slotName={}, robotTaskCode={}",
                     method, slotName, dto.getRobotTaskCode());
-            return ResponseResult.success(true);
+            return ResponseResult.successWithCode0();
         }
 
         // slotName格式：GW01~GW13，提取数字部分
@@ -89,7 +89,7 @@ public class ExternalInterfaceController {
         } catch (NumberFormatException e) {
             log.warn("AGV任务回调：slotName格式错误，slotName={}, robotTaskCode={}",
                     slotName, dto.getRobotTaskCode());
-            return ResponseResult.success(true);
+            return ResponseResult.successWithCode0();
         }
 
         // slotName = 分拣口编号(GW01~GW13)，queue_id = 分拣口编号 + 1
@@ -99,7 +99,7 @@ public class ExternalInterfaceController {
         if (queueInfo == null) {
             log.warn("AGV任务回调：未找到队列，slotName={}, queueId={}, robotTaskCode={}",
                     slotName, queueId, dto.getRobotTaskCode());
-            return ResponseResult.success(true);
+            return ResponseResult.successWithCode0();
         }
 
         log.info("AGV任务回调：method={}, slotName={}, queueId={}, queueName={}, 当前trayStatus={}, robotTaskCode={}",
@@ -139,6 +139,6 @@ public class ExternalInterfaceController {
                 break;
         }
 
-        return ResponseResult.success(true);
+        return ResponseResult.successWithCode0();
     }
 }

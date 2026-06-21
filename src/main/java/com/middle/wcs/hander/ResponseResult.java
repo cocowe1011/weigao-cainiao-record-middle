@@ -23,6 +23,12 @@ public class ResponseResult<T> implements Serializable {
     //返回数据
     private T data;
 
+    //请求编码
+    private String reqCode;
+
+    //是否成功
+    private Boolean success;
+
     public ResponseResult(){}
 
     // 返回数据
@@ -61,6 +67,19 @@ public class ResponseResult<T> implements Serializable {
     public static<T> ResponseResult<T> success(T data){
         ResponseResult<T> result = build(data);
         return build(data, ResultCodeEnum.SUCCESS);
+    }
+
+    /**
+     * 操作成功，code为"0"，success为true
+     */
+    public static<T> ResponseResult<T> successWithCode0(){
+        ResponseResult<T> result = new ResponseResult<>();
+        result.setCode("0");
+        result.setMessage("成功");
+        result.setReqCode("");
+        result.setData(null);
+        result.setSuccess(true);
+        return result;
     }
 
     public static<T> ResponseResult<T> fail(){
