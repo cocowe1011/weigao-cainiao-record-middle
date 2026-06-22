@@ -26,6 +26,6 @@ public class McsMockController {
     @PostMapping("/receiveSignal")
     public ResponseResult<Boolean> receiveSignal(@RequestBody Map<String, Object> payload) {
         log.info("MCS模拟接口收到请求：{}", payload);
-        return ResponseResult.success(true);
+        return ResponseResult.successWithCode0();
     }
 }
