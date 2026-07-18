@@ -122,15 +122,15 @@ public class ExternalInterfaceController {
                 break;
 
             case "arrive":
-                // 空箱返回：AGV已送空托盘回来，trayStatus 从 "1" 更新为 "2"
+                // 空箱返回：AGV已送空托盘回来，trayStatus 更新为 "2" 解锁；非"1"也强制解锁并记日志
                 if ("1".equals(queueInfo.getTrayStatus())) {
                     log.info("AGV任务回调-arrive：空箱返回，分拣口{}，trayStatus 1->2", slotName);
-                    queueInfoForUpdate.setTrayStatus("2");
-                    this.queueInfoService.update(queueInfoForUpdate);
                 } else {
-                    log.warn("AGV任务回调-arrive：分拣口{}，当前trayStatus={}，非'1'状态，跳过",
+                    log.warn("AGV任务回调-arrive：空箱返回，分拣口{}，当前trayStatus={}，非'1'状态，仍解锁 trayStatus->2",
                             slotName, queueInfo.getTrayStatus());
                 }
+                queueInfoForUpdate.setTrayStatus("2");
+                this.queueInfoService.update(queueInfoForUpdate);
                 break;
 
             default:
