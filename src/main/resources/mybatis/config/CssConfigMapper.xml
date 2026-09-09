@@ -19,7 +19,12 @@
         css_config.length_one,
         css_config.length_two,
         css_config.pointl_length,
-        css_config.language_set
+        css_config.language_set,
+        css_config.arrival_tolerance_sec,
+        css_config.not_entered_timeout_sec,
+        css_config.cmd_not_sent_timeout_sec,
+        css_config.large_port_capacity,
+        css_config.small_port_capacity
     FROM
         dbo.css_config
 </select>

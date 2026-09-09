@@ -95,4 +95,29 @@ public class CssConfig {
      */
     private String languageSet;
 
+    /**
+     * 触发分拣机光电后应到达的误差（秒，±）
+     */
+    private BigDecimal arrivalToleranceSec;
+
+    /**
+     * 清理未进入分拣口包裹的时间（秒）：已发转向命令后仍未进分拣口则删除
+     */
+    private BigDecimal notEnteredTimeoutSec;
+
+    /**
+     * 清理超时未发送分拣命令的包裹的时间（秒）：超过应到达时刻后再等待该时长仍未发命令则删除
+     */
+    private BigDecimal cmdNotSentTimeoutSec;
+
+    /**
+     * 大包分拣口容量
+     */
+    private Integer largePortCapacity;
+
+    /**
+     * 小包分拣口容量
+     */
+    private Integer smallPortCapacity;
+
 }
