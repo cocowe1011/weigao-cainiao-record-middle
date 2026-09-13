@@ -120,4 +120,39 @@ public class CssConfig {
      */
     private Integer smallPortCapacity;
 
+    /**
+     * 五面扫进队到分拣机1的行进时间（秒）
+     */
+    private BigDecimal sorter1TravelSec;
+
+    /**
+     * 五面扫进队到分拣机2的行进时间（秒）
+     */
+    private BigDecimal sorter2TravelSec;
+
+    /**
+     * 五面扫进队到分拣机3的行进时间（秒）
+     */
+    private BigDecimal sorter3TravelSec;
+
+    /**
+     * 五面扫进队到分拣机4的行进时间（秒）
+     */
+    private BigDecimal sorter4TravelSec;
+
+    /**
+     * 五面扫进队到分拣机5的行进时间（秒）
+     */
+    private BigDecimal sorter5TravelSec;
+
+    /**
+     * 五面扫进队到分拣机6的行进时间（秒）
+     */
+    private BigDecimal sorter6TravelSec;
+
+    /**
+     * 五面扫进队到X光机光电的行进时间（秒）
+     */
+    private BigDecimal xrayTravelSec;
+
 }

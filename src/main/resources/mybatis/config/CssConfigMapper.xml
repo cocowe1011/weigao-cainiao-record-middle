@@ -24,7 +24,14 @@
         css_config.not_entered_timeout_sec,
         css_config.cmd_not_sent_timeout_sec,
         css_config.large_port_capacity,
-        css_config.small_port_capacity
+        css_config.small_port_capacity,
+        css_config.sorter1_travel_sec,
+        css_config.sorter2_travel_sec,
+        css_config.sorter3_travel_sec,
+        css_config.sorter4_travel_sec,
+        css_config.sorter5_travel_sec,
+        css_config.sorter6_travel_sec,
+        css_config.xray_travel_sec
     FROM
         dbo.css_config
 </select>
